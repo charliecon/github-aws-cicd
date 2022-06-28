@@ -1,11 +1,20 @@
 version: 0.2
-
+# env:
+#   secrets-manager:
+#     OAUTH_CLIENT_ID: "dev/charlie_genesyscloud_oauth_creds:CHARLIE_GENESYSCLOUD_OAUTHCLIENT_ID"
+#     OAUTH_CLIENT_SECRET: "dev/charlie_genesyscloud_oauth_creds:CHARLIE_GENESYSCLOUD_OAUTHCLIENT_SECRET"
 phases:
   install:
-    runtime-versions:
-      nodejs: 10
+    # runtime-versions:
+    #   nodejs: 10
     commands:
-      - echo "Installing something"
+      - echo "Installing terraform binary"
+      - yum -y update && yum install -y sudo
+      - yum install -y yum-utils
+      - sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+      - sudo yum -y install terraform
+    finally:
+      - terraform -help
   pre_build:
     commands:
       - echo "We are in the pre build phase"
@@ -14,6 +23,8 @@ phases:
       - echo "Entered the build phase..."
       - echo Build started on `date`
       - grep "Welcome" index.html
+      - terraform --version
+      # - echo "$OAUTH_CLIENT_ID"
   post_build:
     commands:
       - echo "We are in the post build phase"
