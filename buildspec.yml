@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - echo "Installing something"
+  pre_build:
+    commands:
+      - echo "We are in the pre build phase"
+  build:
+    commands:
+      - echo "Entered the build phase...""
+      - echo "Build started on:"
+      - echo `date`
+      - grep "Welcome" index.html
+  post_build:
+    commands:
+      - echo "We are in the post build phase"
+
+
