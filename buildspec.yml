@@ -11,9 +11,8 @@ phases:
       - echo "We are in the pre build phase"
   build:
     commands:
-      - echo "Entered the build phase...""
-      - echo "Build started on:"
-      - echo `date`
+      - echo "Entered the build phase..."
+      - echo Build started on `date`
       - grep "Welcome" index.html
   post_build:
     commands:
