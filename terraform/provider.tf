@@ -7,6 +7,5 @@ terraform {
 }
 
 provider "genesyscloud" {
-    sdk_debug  = true
-    aws_region = "us-east-1"
+    sdk_debug = true
 }
