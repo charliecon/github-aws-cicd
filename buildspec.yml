@@ -1,8 +1,9 @@
 version: 0.2
 env:
   parameter-store:
-    OAUTHCLIENT_ID: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_ID
-    OAUTHCLIENT_SECRET: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_SECRET
+    GENESYSCLOUD_OAUTHCLIENT_ID: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_ID
+    GENESYSCLOUD_OAUTHCLIENT_SECRET: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_SECRET
+    GENESYSCLOUD_REGION: /CodeBuild/GENESYSCLOUD_REGION
 phases:
   install:
     runtime-versions:
@@ -17,18 +18,25 @@ phases:
   pre_build:
     commands:
       - echo "We are in the pre build phase"
+      - terraform --version
+      - pip --version
+      - go version
   build:
     commands:
       - echo "Entered the build phase..."
       - echo Build started on `date`
       - grep "Welcome" index.html
-      - go version
       - uname -a
-      - terraform --version
-      - echo Client ID $OAUTHCLIENT_ID
-      - echo Client Secret $OAUTHCLIENT_SECRET
+      - echo Client ID $GENESYSCLOUD_OAUTHCLIENT_ID
+      - echo Client Secret $GENESYSCLOUD_OAUTHCLIENT_SECRET
+      - echo Region $GENESYSCLOUD_REGION
+      - echo Deploying terraform infrastructure
+      - cd terraform
+      - terraform init
+      - terraform plan
   post_build:
     commands:
+      - pwd
       - echo "We are in the post build phase"
 
 
