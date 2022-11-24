@@ -21,30 +21,22 @@ phases:
   pre_build:
     commands:
       # run script to destroy dangling resources
-      - echo "We are in the pre build phase"
       - terraform --version
       - pip --version
       - python --version
       - go version
   build:
     commands:
-      - echo "Entered the build phase..."
       - echo Build started on `date`
-      - grep "Welcome" index.html
       - uname -a
-      - echo Client ID $GENESYSCLOUD_OAUTHCLIENT_ID
-      - echo Client Secret $GENESYSCLOUD_OAUTHCLIENT_SECRET
-      - echo Region $GENESYSCLOUD_REGION
       - echo Deploying terraform infrastructure
       - cd terraform
       - terraform init
       - terraform apply --auto-approve
   post_build:
     commands:
-      - pwd
-      - cd ../scripts
-      - echo "We are in the post build phase"
       - echo "Running platform tests"
+      - cd ../scripts
       - python platform_tests.py
     finally:
       - cd ../terraform
