@@ -1,5 +1,7 @@
 version: 0.2
 env:
+  variables:
+    GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
   parameter-store:
     GENESYSCLOUD_OAUTHCLIENT_ID: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_ID
     GENESYSCLOUD_OAUTHCLIENT_SECRET: /CodeBuild/GENESYSCLOUD_OAUTHCLIENT_SECRET
@@ -15,11 +17,14 @@ phases:
       - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
       - sudo apt update
       - sudo apt-get install terraform
+      - pip install PureCloudPlatformClientV2
   pre_build:
     commands:
+      # run script to destroy dangling resources
       - echo "We are in the pre build phase"
       - terraform --version
       - pip --version
+      - python --version
       - go version
   build:
     commands:
@@ -33,10 +38,16 @@ phases:
       - echo Deploying terraform infrastructure
       - cd terraform
       - terraform init
-      - terraform plan
+      - terraform apply --auto-approve
   post_build:
     commands:
       - pwd
+      - cd ../scripts
       - echo "We are in the post build phase"
+      - echo "Running platform tests"
+      - python platform_tests.py
+    finally:
+      - cd ../terraform
+      - terraform destroy --auto-approve
 
 

@@ -1,3 +1,3 @@
 resource "genesyscloud_routing_wrapupcode" "test" {
-    name = "Test Wrap Up Code 2411"
+    name = "test_wrapupcode2411"
 }
