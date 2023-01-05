@@ -8,5 +8,6 @@ terraform {
 }
 
 provider "genesyscloud" {
+    # config options
     sdk_debug = true
 }

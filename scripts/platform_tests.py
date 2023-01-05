@@ -1,6 +1,5 @@
 import PureCloudPlatformClientV2, os, time
 from PureCloudPlatformClientV2.rest import ApiException
-from pprint import pprint
 
 CLIENT_ID = os.environ['GENESYSCLOUD_OAUTHCLIENT_ID']
 CLIENT_SECRET = os.environ['GENESYSCLOUD_OAUTHCLIENT_SECRET']
@@ -23,7 +22,6 @@ def find_wrapupcode(name):
 
 def start():
     time.sleep(5)
-    
     wrapupcode_name = 'test_wrapupcode2411'
     wrapupcode = find_wrapupcode(wrapupcode_name)
     assert not(wrapupcode is None)
